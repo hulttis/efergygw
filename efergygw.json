@@ -1,0 +1,128 @@
+{
+  "COMMON": {
+    "nameservers": [
+      "192.168.100.1"
+    ],
+    "hostname": ""
+  },
+  "INFLUX": [
+    {
+      "enable": true,
+      "name": "influx1_min",
+      "host": "influxhost1",
+      "port": 8086,
+      "database": "ruuvi_db1"
+    },
+    {
+      "enable": true,
+      "name": "influx2_max",
+      "host": "influxhost2",
+      "port": 8087,
+      "ssl": true,
+      "ssl_verify": false,
+      "database": "ruuvi_db2",
+      "username": "user2",
+      "password": "passwd2",
+      "timeout": 10,
+      "retries": 2,
+      "POLICY": {
+        "name": "oneweek",
+        "duration": "7d",
+        "replication": 1,
+        "default": true,
+        "alter": false
+      }
+    }
+  ],
+  "MQTT": [
+    {
+      "enable": true,
+      "name": "mqtt1_min",
+      "host": "mqtt1",
+      "topic": "ha/ruuvi",
+      "adtopic": "homeassistant/sensor/ruuvi",
+      "anntopic": "ha/ruuvi/announce"
+    },
+    {
+      "enable": true,
+      "name": "mqtt2_max",
+      "client_id": "mqtt2",
+      "host": "mqtt2",
+      "port": 8883,
+      "ssl": true,
+      "ssl_insecure": false,
+      "cafile": "./certs/ca.crt",
+      "cert_verify": true,
+      "username": "mqtt",
+      "password": "passwd",
+      "topic": "ha/ruuvi2",
+      "retain": false,
+      "qos": 2,
+      "adtopic": "homeassistant/sensor/ruuvi2",
+      "adretain": true,
+      "adqos": 1,
+      "anntopic": "ruuvi2/announce",
+      "annqos": 1,
+      "lwt": true,
+      "lwttopic": "ha/ruuvi2/lwt",
+      "lwtqos": 1,
+      "lwtretain": false,
+      "lwtperiod": 60,
+      "lwtonline": "online",
+      "lwtoffline": "offline",
+      "ADFIELDS": {
+        "day": {
+            "consumption": {
+            "unit_of_meas": "kW",
+            "dev_cla": "power",
+            "val_tpl": "{{ value_json.consumption | float | round(2) }}"
+            }
+        },
+        "week": {
+            "consumption": {
+            "unit_of_meas": "kWh",
+            "dev_cla": "power",
+            "val_tpl": "{{ value_json.consumption | float | round(2) }}"
+            }
+        },
+        "month": {
+            "consumption": {
+            "unit_of_meas": "kWh",
+            "dev_cla": "power",
+            "val_tpl": "{{ value_json.consumption | float | round(2) }}"
+            }
+        },
+        "year": {
+            "consumption": {
+            "unit_of_meas": "kWh",
+            "dev_cla": "power",
+            "val_tpl": "{{ value_json.consumption | float | round(2) }}"
+            }
+        }
+      }
+    }    
+  ],
+  "EFERGY": [
+    {
+      "name": "efergy",
+      "url": "https://engage.efergy.com/mobile_proxy/",
+      "timeout": 8,
+      "OUTPUT": [
+        "influx1_min",
+        "influx2_max",
+        "mqtt1_min",
+        "mqtt2_max"
+      ],
+      "TOKENS": [
+        {"token": "<efergy api token>", "location": "<location>"},
+        {"token": "<efergy api token>", "location": "<location>"}
+      ],
+      "SCHEDULE": [
+          {"func": "getDay",  "series": "day",     "cron": "* * * * *"},
+          {"func": "getWeek", "series": "week",    "cron": "0 * * * *"},
+          {"func": "getMonth","series": "month",   "cron": "1 * * * *"},
+          {"func": "getYear", "series": "year",    "cron": "2 0 * * *"}
+      ]
+    }
+  ]
+}

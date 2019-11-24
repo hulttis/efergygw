@@ -1,0 +1,10 @@
+[Unit]
+ Description=Efergy Gateway
+ After=multi-user.target
+
+ [Service]
+ Type=idle
+ ExecStart=/app/efergygw/env/bin/python /app/efergygw/efergygw.py -c /app/efergygw/efergygw.json -l /app/efergygw/efergygw_logging.json
+
+ [Install]
+ WantedBy=multi-user.target
