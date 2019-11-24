@@ -162,7 +162,7 @@ class main_class(mixinSchedulerEvent):
             for l_influx in l_influxs:
                 if l_influx.get('enable', _def.INFLUX_ENABLE):
                     try:
-                        l_inqueue = asyncio.Queue(loop=self._loop, maxsize=l_influx.get('queue_size', _def.INFLUX_QUEUE_SIZE))
+                        l_inqueue = asyncio.Queue(maxsize=l_influx.get('queue_size', _def.INFLUX_QUEUE_SIZE))
                         l_proc = _influx(
                             cfg = l_influx,
                             hostname = l_common.get('hostname', _def.COMMON_HOSTNAME),
@@ -200,7 +200,7 @@ class main_class(mixinSchedulerEvent):
             for l_mqtt in l_mqtts:
                 if l_mqtt.get('enable', _def.MQTT_ENABLE):
                     try:
-                        l_inqueue = asyncio.Queue(loop=self._loop, maxsize=l_mqtt.get('queue_size', _def.MQTT_QUEUE_SIZE))
+                        l_inqueue = asyncio.Queue(maxsize=l_mqtt.get('queue_size', _def.MQTT_QUEUE_SIZE))
                         l_proc = _mqtt(
                             cfg = l_mqtt,
                             hostname = l_common.get('hostname', _def.COMMON_HOSTNAME),
@@ -272,10 +272,9 @@ class main_class(mixinSchedulerEvent):
                     logger.warning(f'shutdown task:{l_key}')
                     if l_proc.proc and hasattr(l_proc.proc, 'shutdown'):
                         l_proc.proc.shutdown()
-                    if not sys.platform.startswith('linux') or os.environ.get('CI') == 'True': 
-                        l_task.cancel()
-                        with suppress(asyncio.CancelledError):
-                            self._loop.run_until_complete(l_task)                    
+                    l_task.cancel()
+                    with suppress(asyncio.CancelledError):
+                        self._loop.run_until_complete(l_task)                    
         else:
             logger.warning('no procs')
 

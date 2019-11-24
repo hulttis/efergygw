@@ -11,7 +11,7 @@
       "name": "influx1_min",
       "host": "influxhost1",
       "port": 8086,
-      "database": "ruuvi_db1"
+      "database": "efergy_db1"
     },
     {
       "enable": true,
@@ -20,7 +20,7 @@
       "port": 8087,
       "ssl": true,
       "ssl_verify": false,
-      "database": "ruuvi_db2",
+      "database": "efergy_db2",
       "username": "user2",
       "password": "passwd2",
       "timeout": 10,
@@ -39,9 +39,9 @@
       "enable": true,
       "name": "mqtt1_min",
       "host": "mqtt1",
-      "topic": "ha/ruuvi",
-      "adtopic": "homeassistant/sensor/ruuvi",
-      "anntopic": "ha/ruuvi/announce"
+      "topic": "ha/efergy",
+      "adtopic": "homeassistant/sensor/efergy",
+      "anntopic": "ha/efergy/announce"
     },
     {
       "enable": true,
@@ -55,16 +55,16 @@
       "cert_verify": true,
       "username": "mqtt",
       "password": "passwd",
-      "topic": "ha/ruuvi2",
+      "topic": "ha/efergy2",
       "retain": false,
       "qos": 2,
-      "adtopic": "homeassistant/sensor/ruuvi2",
+      "adtopic": "homeassistant/sensor/efergy2",
       "adretain": true,
       "adqos": 1,
-      "anntopic": "ruuvi2/announce",
+      "anntopic": "efergy2/announce",
       "annqos": 1,
       "lwt": true,
-      "lwttopic": "ha/ruuvi2/lwt",
+      "lwttopic": "ha/efergy2/lwt",
       "lwtqos": 1,
       "lwtretain": false,
       "lwtperiod": 60,

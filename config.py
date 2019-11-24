@@ -80,8 +80,8 @@ class config_reader(object):
             raise ValueError(f'one of [INFLUX] and/or [MQTT] need to be enabled')
 
         # EFERGY
-        l_ruuvi = l_cfg.get('EFERGY', None)
-        if not l_ruuvi:
+        l_efergy = l_cfg.get('EFERGY', None)
+        if not l_efergy:
             raise ValueError(f'[EFERGY] configuration required')
 
         return l_cfg

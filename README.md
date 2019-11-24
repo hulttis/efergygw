@@ -104,7 +104,7 @@ NOTE: Instructions are for Python 3.8
 - `sudo -i`
 - create /app directory (`mkdir -p /app && cd /app`)
 - create /var/log/efergygw directory (`mkdir -p /var/log/efergygw`) for logs
-- clone git repository to /app directory (`git clone https://github.com/hulttis/efergygw.git`)
+- clone git repository to /app directory (`git clone --single-branch https://github.com/hulttis/efergygw.git`)
 - edit /app/efergygw/efergygw.json file (`nano /app/efergygw/efergygw.json`)
 - create virtual environment (`cd /app/efergygw && python3.8 -m venv env`)
 - activate virtual environment (`source env/bin/activate`)
@@ -124,7 +124,7 @@ NOTE: Instructions are for Python 3.8
 - `cd /app`
 - copy config to safe location (`cp -v ./efergygw/efergygw.json . && cp -v ./efergygw/efergygw_logging.json .`)
 - remove efergygw (`rm -fr ./efergygw`)
-- clone git repository (`git clone --no-checkout https://github.com/hulttis/efergygw.git`)
+- clone git repository (`git clone --single-branch https://github.com/hulttis/efergygw.git`)
 - copy old config back to efergygw (`cp -v *.json efergygw/.`)
 - create virtual environment (`cd /app/efergygw && python3.8 -m venv env`)
 - activate virtual environment (`source env/bin/activate`)
