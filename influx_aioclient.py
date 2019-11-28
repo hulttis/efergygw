@@ -458,24 +458,33 @@ class influx_aioclient(_mixinQueue):
             else:
                 l_rebuffer = True
         except InfluxDBWriteError as l_e:
-            logger.error(f'{self._name} jobid:{l_jobid} InfluxDBWriteError ({l_e.status} {l_e.reason}): {l_e.headers.get("X-Influxdb-Error", "")} item:{item}')
-            l_reconnect = True
+            logger.warning(f'{self._name} jobid:{l_jobid} InfluxDBWriteError ({l_e.status} {l_e.reason}): {l_e.headers.get("X-Influxdb-Error", "")}')
+            logger.debug(f'{self._name} jobid:{l_jobid} item:{item}')
         except ConnectionRefusedError:
-            logger.error(f'{self._name} jobid:{l_jobid} ConnectionRefusedError item:{item}')
+            logger.error(f'{self._name} jobid:{l_jobid} ConnectionRefusedError')
+            logger.debug(f'{self._name} jobid:{l_jobid} item:{item}')
             l_reconnect = True
+            l_rebuffer = True
         except ServerDisconnectedError:
-            logger.error(f'{self._name} jobid:{l_jobid} ServerDisconnectedError item:{item}')
+            logger.error(f'{self._name} jobid:{l_jobid} ServerDisconnectedError')
+            logger.debug(f'{self._name} jobid:{l_jobid} item:{item}')
             l_reconnect = True
+            l_rebuffer = True
         except ClientConnectorError:
-            logger.error(f'{self._name} jobid:{l_jobid} ClientConnectorError item:{item}')
+            logger.error(f'{self._name} jobid:{l_jobid} ClientConnectorError')
+            logger.debug(f'{self._name} jobid:{l_jobid} item:{item}')
             l_reconnect = True
+            l_rebuffer = True
         except asyncio.TimeoutError:
-            logger.error(f'{self._name} jobid:{l_jobid} TimeoutError item:{item}')
+            logger.error(f'{self._name} jobid:{l_jobid} TimeoutError')
+            logger.debug(f'{self._name} jobid:{l_jobid} item:{item}')
             l_reconnect = True
+            l_rebuffer = True
         except asyncio.CancelledError:
-            logger.error(f'{self._name} CancelledError item:{item}')
+            logger.error(f'{self._name} CancelledError')
+            logger.debug(f'{self._name} jobid:{l_jobid} item:{item}')
         except:
-            logger.exception(f'*** {self._name}')
+            logger.exception(f'*** {self._name} jobid:{l_jobid}')
         finally:
             if l_reconnect: # reconnect needed
                 if self._dbcon:
@@ -484,7 +493,7 @@ class influx_aioclient(_mixinQueue):
                     self._dbcon = None
                 self._dbcon_reconnect = True
                 # rebuffer unsent data by sending it back to the queue
-            if l_rebuffer or l_reconnect:
+            if l_rebuffer:
                 if self._inqueue:
                     item['resend'] = True
                     await self.queue_put(outqueue=self._inqueue, data=item)
