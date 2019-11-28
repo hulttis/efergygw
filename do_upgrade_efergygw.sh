@@ -1,6 +1,6 @@
 #!/bin/bash
 # copy to app directory (one level up from efergygw)
-echo efergygw branch: ${1:-asyncio}
+echo "efergygw branch: ${1:-asyncio}"
 systemctl stop efergygw
 rm -frv ./efergygw/new
 cp -v ./efergygw/efergygw.json ./efergygw.json.upg
@@ -9,3 +9,4 @@ cp -vr ./efergygw/new/* ./efergygw/.
 cp -vr efergygw.json.upg ./efergygw/efergygw.json
 rm -v efergygw.json.upg
 systemctl start efergygw
+echo "efergygw upgrade done"
