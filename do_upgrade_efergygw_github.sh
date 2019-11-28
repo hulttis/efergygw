@@ -1,6 +1,6 @@
 #!/bin/bash
 # copy to app directory (one level up from efergygw)
-echo efergygw (github)
+echo efergygw github
 systemctl stop efergygw
 rm -frv ./efergygw/new
 cp -v ./efergygw/efergygw.json ./efergygw.json.upg
