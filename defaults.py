@@ -12,7 +12,7 @@ import sys
 PROGRAM_NAME = 'Efergy Gateway'
 LONG_PROGRAM_NAME = 'Efergy InfluxDB/MQTT Gateway'
 PROGRAM_PY = 'efergygw.py'
-VERSION = '3.3.8 (191128)'
+VERSION = '3.3.8 (191128) (github)'
 PROGRAM_COPYRIGHT = '(c)TK 2019'
 
 CFGFILE = 'efergygw.json'
