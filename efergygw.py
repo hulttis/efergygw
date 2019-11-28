@@ -269,9 +269,10 @@ class main_class(mixinSchedulerEvent):
             for l_key, l_proc in self._procs.procs.items():
                 l_task = l_proc.task
                 if l_task and not l_task.cancelled():
-                    logger.warning(f'shutdown task:{l_key}')
-                    if l_proc.proc and hasattr(l_proc.proc, 'shutdown'):
-                        l_proc.proc.shutdown()
+                    # if l_proc.proc and hasattr(l_proc.proc, 'shutdown'):
+                    #     logger.info(f'shutdown task:{l_key}')
+                    #     l_proc.proc.shutdown()
+                    logger.info(f'cancel task:{l_key}')
                     l_task.cancel()
                     with suppress(asyncio.CancelledError):
                         self._loop.run_until_complete(l_task)                    

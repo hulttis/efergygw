@@ -84,7 +84,7 @@
             "propagate": true
         },
         "efergy": {
-            "level": "INFO",
+            "level": "DEBUG",
             "handlers": ["efergy_fh"],
             "propagate": true
         },

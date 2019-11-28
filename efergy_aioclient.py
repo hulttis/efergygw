@@ -126,7 +126,7 @@ class efergy_aioclient(_mixinQueue):
                         l_series = l_schedule.get('series', None)
                         l_cron = l_schedule.get('cron', None)
                         if l_loc and l_series and l_cron:
-                            l_jobid = f'{self._name}_{l_loc}_{l_series}_{l_cnt}'
+                            l_jobid = f'{l_loc}_{l_series}_{l_cnt}'
                             self._error[l_jobid] = False
                             scheduler.add_job(
                                 self._do_job, 
@@ -166,7 +166,7 @@ class efergy_aioclient(_mixinQueue):
             logger.warning(f'{self._name} CancelledError')
 
         await self._session.close()
-        logger.warning(f'{self._name} exit')
+        logger.info(f'{self._name} done')
         return True
 
 #-------------------------------------------------------------------------------
@@ -355,6 +355,8 @@ class efergy_aioclient(_mixinQueue):
             }
             await self._queue_output(jobid=jobid, data=l_data)
             self._update_cnt(jobid=jobid)
+        else:
+            logger.warning(f'{self._name} {jobid} empty json')
 
 #-------------------------------------------------------------------------------
     async def _queue_output(self, *, jobid, data):

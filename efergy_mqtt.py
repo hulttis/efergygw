@@ -8,7 +8,7 @@
 import logging
 logger = logging.getLogger('mqtt')
 
-# import json
+import asyncio
 from collections import defaultdict
 from datetime import datetime as _dt
 from datetime import timezone
@@ -20,7 +20,7 @@ import defaults as _def
 # ==================================================================================
 
 class efergy_mqtt(_mqtt):
-
+    _adlock = asyncio.Lock()
 #-------------------------------------------------------------------------------
     def __init__(self, *,
         cfg,
@@ -182,20 +182,19 @@ class efergy_mqtt(_mqtt):
             l_item = await self._get_newest(item = item['json'])
             if l_item:
                 l_topic = topic + '/' + l_item['tags']['loc'] + '/' + l_item['measurement']
-                await self._efergy_announce(item=l_item, topic=l_topic)
-                if self._cfg.get('debug', _def.MQTT_DEBUG):
-                    l_item['fields']['debug'] = {
-                        'time': l_item['time'],
-                        'hostname': l_item['tags']['hostname']
-                    }
-                l_bytes = str(l_item['fields']).replace('\'', '\"').encode()
+                async with efergy_mqtt._adlock:
+                    await self._efergy_announce(item=l_item, topic=l_topic)
+                l_payload = None
+                if not self._cfg.get('fulljson', _def.MQTT_FULLJSON):
+                    l_payload = l_item['fields']
+                    try:
+                        del l_payload['time']
+                    except:
+                        pass
+                else:
+                    l_payload = l_item
+                if not await self._publish(topic=l_topic, payload=str(l_payload).replace('\'', '\"').encode(), retain=self._retain):
+                    logger.debug(f'{self._name} jobid:{l_jobid} publish failed topic:{l_topic} payload:{l_payload}')
         except Exception:
             logger.exception(f'***')
             return
-
-        logger.debug(f'{self._name} jobid:{l_jobid} topic:{l_topic} item:{item}')
-        if not await self._publish(topic=l_topic, payload=l_bytes, retain=self._retain):
-            item['resend'] = True
-            await self.queue_put(outqueue=self._inqueue, data=item)
-            logger.warning(f'{self._name} jobid:{l_jobid} rebuffer')
-            logger.debug(f'{self._name} jobid:{l_jobid} rebuffer data:{item}')

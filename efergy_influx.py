@@ -24,7 +24,6 @@ class efergy_influx(_influx):
     ):
         super().__init__(
             cfg=cfg,
-            hostname=hostname,
             inqueue=inqueue,
             loop=loop,
             scheduler=scheduler,

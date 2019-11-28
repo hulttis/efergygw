@@ -12,7 +12,7 @@ import sys
 PROGRAM_NAME = 'Efergy Gateway'
 LONG_PROGRAM_NAME = 'Efergy InfluxDB/MQTT Gateway'
 PROGRAM_PY = 'efergygw.py'
-VERSION = '3.3.7 (191123)'
+VERSION = '3.3.8 (191128)'
 PROGRAM_COPYRIGHT = '(c)TK 2019'
 
 CFGFILE = 'efergygw.json'
@@ -61,7 +61,7 @@ INFLUX_QUEUE_SIZE = 100
 
 # MQTT
 MQTT_ENABLE = True
-MQTT_DEBUG = False
+MQTT_FULLJSON = False
 MQTT_TOPIC = 'test'
 # MQTT_ADTOPIC = None
 # MQTT_ANNTOPIC = None
@@ -127,7 +127,7 @@ MQTT_ADFIELDS = {
 
 
 #EFERGY
-EFERGY_NAME = "efergy" 
+EFERGY_NAME = "efergy_default" 
 EFERGY_URL = "https://engage.efergy.com/mobile_proxy/"
 EFERGY_TIMEOUT = 10
 EFERGY_QUEUE_MAXSIZE = 100
