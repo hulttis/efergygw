@@ -3,9 +3,9 @@
 echo efergygw branch: ${1:-asyncio}
 systemctl stop efergygw
 rm -frv ./efergygw/new
-cp -v ./efergygw/efergygw.json ./efergygw.json.bk
+cp -v ./efergygw/efergygw.json ./efergygw.json.upg
 git clone -b ${1:-asyncio} --single-branch https://timo:tED_Frds72CcC27teW4o@git.kopsu.eu/python/efergy.git efergygw/new
 cp -vr ./efergygw/new/* ./efergygw/.
-cp -vr efergygw.json.bk ./efergygw/efergygw.json
-rm -v efergygw.json.bk
+cp -vr efergygw.json.upg ./efergygw/efergygw.json
+rm -v efergygw.json.upg
 systemctl start efergygw

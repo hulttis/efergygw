@@ -3,9 +3,9 @@
 echo efergygw (github)
 systemctl stop efergygw
 rm -frv ./efergygw/new
-cp -v ./efergygw/efergygw.json ./efergygw.json.bk
+cp -v ./efergygw/efergygw.json ./efergygw.json.upg
 git clone --single-branch https://github.com/hulttis/efergygw.git efergygw/new
 cp -vr ./efergygw/new/* ./efergygw/.
-cp -vr efergygw.json.bk ./efergygw/efergygw.json
-rm -v efergygw.json.bk
+cp -vr efergygw.json.upg ./efergygw/efergygw.json
+rm -v efergygw.json.upg
 systemctl start efergygw
